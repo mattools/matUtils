@@ -1,10 +1,15 @@
-function resList = readFileList(filePattern, readFunction, varargin)
+function [resList, fileNames] = readFileList(filePattern, readFunction, varargin)
 % Read a series of files from a file pattern and a functon handle.
 %
 %   RESLIST = readFileList(FILEPATTERN, FUNHANDLE)
 %
+%   RESLIST = readFileList(..., 'verbose', VERB)
+%
+%   [RESLIST, FILENAMES] = readFileList(...)
+%   Also returnsthe list of file names.
+%
 %   Example
-%   readFileList
+%     imageList = readFileList('inputDir/*.tif', @imread);
 %
 %   See also
 %
@@ -17,7 +22,7 @@ function resList = readFileList(filePattern, readFunction, varargin)
 
 
 %% Parse input args.
-verbose = false;
+verbose = true;
 while length(varargin) > 1
     pname = varargin{1};
     if strcmpi(pname, 'verbose')
@@ -43,9 +48,11 @@ end
 %% Iterate over files
 
 resList = cell(nFiles, 1);
+fileNames = cell(nFiles, 1);
 
 for iFile = 1:nFiles
     fileName = fileList(iFile).name;
+    fileNames{iFile} = fileName;
     if verbose
         disp(sprintf('Reading file %d/%d: %s', iFile, nFiles, fileName)); %#ok<DSPS>
     end
