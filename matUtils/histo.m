@@ -1,5 +1,5 @@
 function varargout = histo(X, varargin)
-%HISTO compute discrete histograms
+% Histogram for arrays of integer values.
 %
 %   HISTO(X);
 %   Draw Histogram of values of X. Each value produces a stem, and the
@@ -10,17 +10,18 @@ function varargout = histo(X, varargin)
 %   compute the number of occurencies of each unique value, does not draw
 %   the histogram.
 %   
-%   [N B] = HISTO(X);
+%   [N, B] = HISTO(X);
 %   compute the number of occurencies of each unique value and return the
 %   unique value array B. Does not draw the histogram.
 %
 %   HISTO(X, ...) 
 %   specifies the same options as STEM to draw the histogram.
 %
-%   See also HIST, HISTC.
+%   See also
+%     histogram, histcounts
 %
+
 %   ---------
-%
 %   author : David Legland 
 %   INRA - TPV URPOI - BIA IMASTE
 %   created the 24/09/2004
@@ -34,7 +35,7 @@ function varargout = histo(X, varargin)
 [B, I, J] = unique(X); %#ok<ASGLU>
 
 % compute occurences of each unique value
-N = hist(J, 1:max(J));
+N = histcounts(J, 'BinLimits', [1 max(J)], 'BinMethod', 'integers');
 
 if nargout == 0
     % if no output argument, display the histogram
